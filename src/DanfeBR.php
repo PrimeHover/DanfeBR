@@ -11,6 +11,6 @@ class DanfeBR extends Facade {
      *
      * @return string
      */
-    protected static function getFacadeAccessor() { return 'Primehover\DanfeBR\Api'; }
+    protected static function getFacadeAccessor() { return API::class; }
 
 }
