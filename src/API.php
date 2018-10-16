@@ -53,13 +53,13 @@ class API {
      *
      * @author Gustavo Fernandes
      * @since 15/10/2018
-     * @param Captcha $captcha
+     * @param string $code
      * @param string $key
      * @param string $answer
      * @return string
      */
-    public function getXMLByCaptcha(Captcha $captcha, $key, $answer) {
-        $response = $this->getCaptchaResponse($captcha, $key, $answer);
+    public function getXMLByCaptcha($code, $key, $answer) {
+        $response = $this->getCaptchaResponse($code, $key, $answer);
 
         if (isset($response['status']) && (bool)$response['status'] === true && isset($response['xml']) && !empty($response['xml'])) {
             $file = file_get_contents($response['xml']);
@@ -78,13 +78,13 @@ class API {
      *
      * @author Gustavo Fernandes
      * @since 15/10/2018
-     * @param Captcha $captcha
+     * @param string $code
      * @param string $key
      * @param string $answer
      * @return string
      */
-    public function getDanfeByCaptcha(Captcha $captcha, $key, $answer) {
-        $response = $this->getCaptchaResponse($captcha, $key, $answer);
+    public function getDanfeByCaptcha($code, $key, $answer) {
+        $response = $this->getCaptchaResponse($code, $key, $answer);
 
         if (isset($response['status']) && (bool)$response['status'] === true && isset($response['pdf']) && !empty($response['pdf'])) {
             $file = file_get_contents($response['pdf']);
@@ -104,12 +104,12 @@ class API {
      *
      * @author Gustavo Fernandes
      * @since 15/10/2018
-     * @param Captcha $captcha
+     * @param $code
      * @param string $key
      * @param string $answer
      * @return array
      */
-    protected function getCaptchaResponse(Captcha $captcha, $key, $answer) {
+    public function getCaptchaResponse($code, $key, $answer) {
         if (mb_strlen(preg_replace("/[^0-9]/","", trim($key))) !== 44) {
             throw new EmptyResponseException('A chave deve possuir 44 dígitos!');
         }
@@ -118,7 +118,7 @@ class API {
         }
 
         return $this->curl('https://danfe.br.com/api/nfe/nfe_captcha.json', [
-            'key'     => $captcha->getCode(),
+            'key'     => trim($code),
             'captcha' => trim($answer),
             'chave'   => trim($key)
         ]);
