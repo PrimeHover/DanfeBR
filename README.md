@@ -61,5 +61,17 @@ die;
 
 ### Métodos
 ```php
-// 
+// Captura uma DANFe com o XML da NF-e
+$api->getDanfeByXML($xml);
+
+// Captura um novo Captcha
+$captcha = $api->getCaptcha();
+$captcha->getCode(); // código de identificação do Captcha
+$captcha->getImage(); // link da imagem do Captcha
+
+// Captura o XML de acordo com o Captcha
+$api->getXMLByCaptcha(Captcha $captcha, $key, $answer);
+
+// Captura a DANFe de acordo com o Captcha
+$api->getDanfeByCaptcha(Captcha $captcha, $key, $answer);
 ```
