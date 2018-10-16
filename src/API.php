@@ -25,8 +25,8 @@ class API {
 
         $response = $this->curl('https://danfe.br.com/api/nfe/danfe.json', [], $xml->getContent());
         if (isset($response['status']) && (bool)$response['status'] === true && isset($response['pdf']) && !empty($response['pdf'])) {
-
-            $file = file_get_contents($response['pdf']);
+            
+            $file = file_get_contents($response['pdf'], false, stream_context_create([ 'ssl' => [ 'verify_peer' => false, 'verify_peer_name' => false ] ]));
             if (empty($file) || $file === false) {
                 throw new EmptyResponseException('Não foi possível recuperar a DANFE');
             }
@@ -62,7 +62,7 @@ class API {
         $response = $this->getCaptchaResponse($captcha, $key, $answer);
 
         if (isset($response['status']) && (bool)$response['status'] === true && isset($response['xml']) && !empty($response['xml'])) {
-            $file = file_get_contents($response['xml']);
+            $file = file_get_contents($response['xml'], false, stream_context_create([ 'ssl' => [ 'verify_peer' => false, 'verify_peer_name' => false ] ]));
             if (empty($file) || $file === false) {
                 throw new EmptyResponseException('Não foi possível recuperar o XML');
             }
@@ -87,7 +87,7 @@ class API {
         $response = $this->getCaptchaResponse($captcha, $key, $answer);
 
         if (isset($response['status']) && (bool)$response['status'] === true && isset($response['pdf']) && !empty($response['pdf'])) {
-            $file = file_get_contents($response['pdf']);
+            $file = file_get_contents($response['pdf'], false, stream_context_create([ 'ssl' => [ 'verify_peer' => false, 'verify_peer_name' => false ] ]));
             if (empty($file) || $file === false) {
                 throw new EmptyResponseException('Não foi possível recuperar a DANFe');
             }
